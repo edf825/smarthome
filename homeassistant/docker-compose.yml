@@ -1,0 +1,33 @@
+services:
+
+  homeassistant:
+    container_name: homeassistant
+    hostname: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    ports:
+      - "8123:8123"
+    networks:
+      - smarthome-net
+    volumes:
+      - /etc/smarthome/homeassistant/:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+
+  node-red:
+    container_name: nodered
+    hostname: nodered
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/London
+    ports:
+      - "1880:1880"
+    networks:
+      - smarthome-net
+    volumes:
+      - /etc/smarthome/nodered/:/data
+    restart: unless-stopped
+
+networks:
+  smarthome-net:

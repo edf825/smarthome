@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    hostname: reverse-proxy
+    networks:
+      - cloudflare-tunnel
+    volumes:
+      - ./conf.d/reverse-proxy.conf:/etc/nginx/conf.d/reverse-proxy.conf
+    restart: unless-stopped
+
+networks:
+  cloudflare-tunnel:
+    external:
+      name: tunnel
